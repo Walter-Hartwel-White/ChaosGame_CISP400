@@ -13,8 +13,7 @@ struct coor {
 	int y;
 };
 
-void triangle(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int vertice);
-void square(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int& prevVec);
+void shape(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int vertice, double rVal);
 
 int main()
 {
@@ -147,13 +146,13 @@ int main()
 		{
 			switch (vertice) {
 			case 3: 
-				triangle(points.size(), vertices, points, 3);
+				shape(points.size(), vertices, points, 3, .5);
 				break;
 			case 4:
-				square(points.size(), vertices, points, prevVer);
+				shape(points.size(), vertices, points, 4, .3333);
 				break;
 			case 5:
-				triangle(points.size(), vertices, points, 5);
+				shape(points.size(), vertices, points, 5, .382);
 				break;
 			}
 		}
@@ -194,7 +193,7 @@ int main()
     return 0;
 }
 
-void triangle(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int vertice) {
+void shape(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int vertice, double rVal) {
 	currSize = points.size();
 	int x1 = 0;
 	int x2 = 0;
@@ -209,42 +208,8 @@ void triangle(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points,
 			randNum = rand() % ((vertice - 1) + 1);
 			x1 = vertices[randNum].x; y1 = vertices[randNum].y;
 			x2 = points[i - 1].x; y2 = points[i - 1].y;
-			if (vertice == 3) {
-				pointX = (x1 + x2) / 2; pointY = (y1 + y2) / 2;
-			}
-			else{
-				pointX = ((x2 - x1) * .382) + x1; pointY = ((y2 - y1) * .382) + y1;
-			}
+			pointX = ((x2 - x1) * rVal) + x1; pointY = ((y2 - y1) * rVal) + y1;
 			points.push_back(Vector2f(pointX, pointY));
-		}
-	}
-}
-//
-void square(int currSize, vector<Vector2f> vertices, vector<Vector2f>& points, int& prevVec) {
-	currSize = points.size();
-	double x1 = 0;
-	double x2 = 0;
-	double y1 = 0;
-	double y2 = 0;
-	double pointX = 0;
-	double pointY = 0;
-	int randNum = 0;
-
-	if (currSize < 3000) {
-		for (int i = 1; i < (currSize + 1); i++) {
-			randNum = rand() % (4);
-			while (randNum == prevVec) {
-				randNum = rand() % (4);
-			}
-			
-			//std::cout << randNum << endl;
-
-			x1 = vertices[randNum].x; y1 = vertices[randNum].y;
-			x2 = points[i - 1].x; y2 = points[i - 1].y;
-			pointX = ((x2 - x1) * .3333) + x1; pointY = ((y2 - y1) * .3333) + y1;
-			points.push_back(Vector2f(pointX, pointY));
-
-			prevVec = randNum;
 		}
 	}
 }
